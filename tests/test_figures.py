@@ -1,5 +1,6 @@
 import unittest
 import os
+import subprocess
 
 import dataset.cases as cases
 import gis.gis as gis
@@ -11,24 +12,33 @@ from bokeh.layouts import row
 from bokeh.models import CustomJS, HoverTool
 
 THIS_PATH = os.path.abspath(os.path.dirname(__file__))
-    
+OUTPUT_FILE_PATH = os.path.join(THIS_PATH,"output")
+MAP_OUTPUT_FILE = os.path.join(OUTPUT_FILE_PATH,"test_create_map.html")
+MAP_TIMESERIES_OUTPUT_FILE = os.path.join(OUTPUT_FILE_PATH,"test_ts_map_callback.html")
+       
 class TestPlots(unittest.TestCase):
-    
+
+     
     def setUp(self):
         self.casedata = cases.SanDiegoCasesByZipCode()
         self.gis = gis.ZipCodeGIS(self.casedata.zipcodes)
+        self.files_to_view = []
         
     def test_create_map(self):
         
         
         fig = f.create_map(self.gis)
-        output_file(os.path.join(THIS_PATH,"output/test_create_map.html"))
+        output_file(MAP_OUTPUT_FILE)
         save(fig)
         
     def test_can_add_callback_to_map_figure(self):
         mapfig = f.create_map(self.gis)
         tsfig = f.create_timeseries(self.casedata)
         (mapfig, tsfig) = f.link_map_and_timeseries(mapfig,tsfig,self.casedata.by_zip_dict)
-        output_file(os.path.join(THIS_PATH,"output/test_can_add_callback_to_map_figure.html"))
+        output_file(MAP_TIMESERIES_OUTPUT_FILE)
         save(row(mapfig,tsfig))
         
+    @classmethod    
+    def tearDownClass(cls):
+        subprocess.run(["open",MAP_OUTPUT_FILE])
+        subprocess.run(["open",MAP_TIMESERIES_OUTPUT_FILE])
