@@ -108,7 +108,6 @@ def link_map_and_timeseries(mapfig: figure,tsfig: figure, datadict: dict) -> (fi
         data['Day'] = Object.values(cases_by_zipcode['Day'])
     } 
     cases_timeseries.data = data
-    console.log('hello')
     """ % datadict
     
 

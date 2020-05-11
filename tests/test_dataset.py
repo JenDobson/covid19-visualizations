@@ -30,6 +30,11 @@ class TestCasesByZipCode(unittest.TestCase):
         self.assertFalse(self.cases.by_zip_df.isnull().any().any())
         self.assertTrue('Day' in self.cases.by_zip_dict)
         
+    def test_can_set_return_type_selector(self):
+        self.assertListEqual(list(self.cases.by_zip_df.iloc[-1,0:5].values),[1,10,0,28,24])
+        self.cases.return_type = 'diff'
+        self.assertListEqual(list(self.cases.by_zip_df.iloc[-1,0:5].values),[0,1,0,5,3])
+        self.assertFalse(self.cases.by_zip_df.isnull().any().any())
         
 class TestGIS(unittest.TestCase):
     def setUp(self):
