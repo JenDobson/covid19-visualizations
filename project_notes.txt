@@ -1,0 +1,18 @@
+Package structure created from Python Packaging Tutorial.  (https://packaging.python.org/tutorials/packaging-projects/)
+
+Run all unit tests with command:
+$ python -m unittest discover tests
+
+Install an editable version of package by running from this directory:
+pip install -e .
+
+Create a distribution (from this directory and with no virtual environment (wheel is in global environment)):
+python setup.py sdist
+OR 
+python setup.py bdist_wheel
+
+
+Install .whl on ~/ENV/python/covid19_tools/bin/activate:
+pip install dist/covid19_visualization_jendobson-0.0.1-py3-none-any.whl 
+
+See https://setuptools.readthedocs.io/en/latest/setuptools.html for directory structure and setup.py metadata.

@@ -1,0 +1,12 @@
+README.md
+setup.py
+src/jdcv19.egg-info/PKG-INFO
+src/jdcv19.egg-info/SOURCES.txt
+src/jdcv19.egg-info/dependency_links.txt
+src/jdcv19.egg-info/top_level.txt
+src/jdcv19/dataset/__init__.py
+src/jdcv19/dataset/cases.py
+src/jdcv19/figures/__init__.py
+src/jdcv19/figures/figures.py
+src/jdcv19/gis/__init__.py
+src/jdcv19/gis/gis.py
