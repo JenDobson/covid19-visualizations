@@ -1,6 +1,6 @@
 import unittest
-import dataset.cases as cases
-import gis.gis as gis
+import jdcv19.dataset.cases as cases
+import jdcv19.gis.gis as gis
 
 import os
 import pandas.testing as pdtest

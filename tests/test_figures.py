@@ -2,9 +2,9 @@ import unittest
 import os
 import subprocess
 
-import dataset.cases as cases
-import gis.gis as gis
-import figures.figures as f
+import jdcv19.dataset.cases as cases
+import jdcv19.gis.gis as gis
+import jdcv19.figures.figures as f
 
 from bokeh.io import show
 from bokeh.plotting import output_file, save 

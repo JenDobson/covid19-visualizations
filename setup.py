@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="covid19-visualization-jendobson", # Replace with your own username
+    name="jdcv19",
     version="0.0.1",
     author="Jen Dobson",
     author_email="jendobson@gmail.com",
@@ -12,7 +12,9 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="",
-    packages=setuptools.find_packages(),
+    packages=setuptools.find_namespace_packages(where="src"),
+    include_package_data=True,
+    package_dir={"": "src"},
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
