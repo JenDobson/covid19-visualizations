@@ -14,6 +14,8 @@ from bokeh.plotting import output_file, save
 from bokeh.layouts import row
 from bokeh.models import CustomJS, HoverTool
 
+import pandas as pd
+
 THIS_PATH = os.path.abspath(os.path.dirname(__file__))
 OUTPUT_FILE_PATH = os.path.join(THIS_PATH,"output")
 MAP_OUTPUT_FILE = os.path.join(OUTPUT_FILE_PATH,"test_create_map.html")
@@ -33,9 +35,9 @@ class TestPlots(unittest.TestCase):
         self.files_to_view = []
         
     def test_create_map(self):
-        a,b = divmod(len(self.gis.zipcode_coordinates),3)
+        a,b = divmod(len(self.gis.zipcode_coordinates.index),3)
         colors = ['red','green','blue']
-        color_spec = colors*a + colors[:b]
+        color_spec = pd.DataFrame(index = self.gis.zipcode_coordinates.index, data={'color':colors*a + colors[:b]})
         fig = f.create_map(self.gis,color_spec)
         output_file(MAP_OUTPUT_FILE)
         save(fig)

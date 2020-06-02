@@ -10,7 +10,7 @@ from jdcv19.gis.gis import ZipCodeGIS
 from jdcv19.dataset.cases import SanDiegoCasesByZipCode
 
 import numpy as np
-
+import pandas as pd
 
 def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
     """ One line summary.
@@ -18,6 +18,8 @@ def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
     Parameters
     ----------
     gis : gis.ZipCodeGIS
+    
+    colors: DataFrame with zipcode and color
     
     Returns
     ----------
@@ -42,12 +44,18 @@ def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
                              line_width = 0.25,
                              fill_alpha = 1)
     
-    zipcodes_source = gis.zipcode_coordinates[['city','latitude','longitude']]; zipcodes_source['colors']=colors;                         
+    zipcodes_source = gis.zipcode_coordinates[['city','latitude','longitude']]; 
+    
+    if isinstance(colors,str):
+        zipcodes_source['color'] = colors
+    elif isinstance(colors,pd.DataFrame):
+        zipcodes_source = pd.concat([zipcodes_source,colors],axis=1);                         
+    
     zipcodes_source = ColumnDataSource(zipcodes_source)
     
     
     renderer = f.scatter(source=zipcodes_source,x='longitude',y='latitude',
-                color='colors',name='zipcode_point_renderer')
+                color='color',name='zipcode_point_renderer')
                     
     f.add_tools(HoverTool(renderers = [renderer],
                           tooltips = [('Zip Code:','@zip'),('City:','@city')]))
