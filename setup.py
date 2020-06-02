@@ -14,6 +14,9 @@ setuptools.setup(
     url="",
     packages=setuptools.find_namespace_packages(where="src"),
     include_package_data=True,
+    package_data = {
+        '': ['*.shp','*.shx','*.dbf','*.SHX','*.shp'],
+    },
     package_dir={"": "src"},
     classifiers=[
         "Programming Language :: Python :: 3",
