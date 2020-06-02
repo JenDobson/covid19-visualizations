@@ -12,7 +12,7 @@ from jdcv19.dataset.cases import SanDiegoCasesByZipCode
 import numpy as np
 
 
-def create_map(gis: ZipCodeGIS) -> figure:
+def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
     """ One line summary.
     
     Parameters
@@ -43,6 +43,7 @@ def create_map(gis: ZipCodeGIS) -> figure:
                              fill_alpha = 1)
                              
     zipcodes_source = ColumnDataSource(gis.zipcode_coordinates[['city','latitude','longitude']])
+    
     renderer = f.scatter(source=zipcodes_source,x='longitude',y='latitude',
                 color='gray',name='zipcode_point_renderer')
                     
