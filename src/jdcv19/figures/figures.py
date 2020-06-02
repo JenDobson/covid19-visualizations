@@ -41,11 +41,13 @@ def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
                              line_color = 'gray',
                              line_width = 0.25,
                              fill_alpha = 1)
-                             
-    zipcodes_source = ColumnDataSource(gis.zipcode_coordinates[['city','latitude','longitude']])
+    
+    zipcodes_source = gis.zipcode_coordinates[['city','latitude','longitude']]; zipcodes_source['colors']=colors;                         
+    zipcodes_source = ColumnDataSource(zipcodes_source)
+    
     
     renderer = f.scatter(source=zipcodes_source,x='longitude',y='latitude',
-                color='gray',name='zipcode_point_renderer')
+                color='colors',name='zipcode_point_renderer')
                     
     f.add_tools(HoverTool(renderers = [renderer],
                           tooltips = [('Zip Code:','@zip'),('City:','@city')]))
