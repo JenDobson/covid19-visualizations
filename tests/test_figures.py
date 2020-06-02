@@ -2,6 +2,9 @@ import unittest
 import os
 import subprocess
 
+import sys
+sys.path.append('../src')
+
 import jdcv19.dataset.cases as cases
 import jdcv19.gis.gis as gis
 import jdcv19.figures.figures as f
@@ -25,14 +28,15 @@ class TestPlots(unittest.TestCase):
         subprocess.run(["rm",MAP_TIMESERIES_OUTPUT_FILE])
         
     def setUp(self):
-        self.casedata = cases.SanDiegoCasesByZipCode()
+        self.casedata = cases.SanDiegoCasesByZipCode(os.path.join(THIS_PATH,'data'))
         self.gis = gis.ZipCodeGIS(self.casedata.zipcodes)
         self.files_to_view = []
         
     def test_create_map(self):
-        
-        
-        fig = f.create_map(self.gis)
+        a,b = divmod(len(self.gis.zipcode_coordinates),3)
+        colors = ['red','green','blue']
+        color_spec = colors*a + colors[:b]
+        fig = f.create_map(self.gis,color_spec)
         output_file(MAP_OUTPUT_FILE)
         save(fig)
         
