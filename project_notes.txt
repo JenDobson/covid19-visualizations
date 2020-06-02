@@ -11,6 +11,8 @@ python setup.py sdist
 OR 
 python setup.py bdist_wheel
 
+(This package has been added to jupyter notebook kernel: "Python Environment for Covid 19" in editable mode)
+
 
 Install .whl on ~/ENV/python/covid19_tools/bin/activate:
 pip install dist/covid19_visualization_jendobson-0.0.1-py3-none-any.whl 
