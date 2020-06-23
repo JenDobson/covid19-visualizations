@@ -49,7 +49,7 @@ def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
     if isinstance(colors,str):
         zipcodes_source['color'] = colors
     elif isinstance(colors,pd.DataFrame):
-        zipcodes_source = pd.concat([zipcodes_source,colors],axis=1);                         
+        zipcodes_source = zipcodes_source.join(colors,how='inner')
     
     zipcodes_source = ColumnDataSource(zipcodes_source)
     
