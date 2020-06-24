@@ -4,6 +4,7 @@ import sys
 sys.path.append('../src')
 
 import jdcv19.dataset.cases as cases
+from jdcv19.dataset.accessors import ZipAccessor, TSAccessor
 import jdcv19.gis.gis as gis
 
 
@@ -15,6 +16,21 @@ import numpy as np
 THISDIR = os.path.dirname(os.path.abspath(__file__))
 
 
+class TestZipAccessor(unittest.TestCase):
+    def setUp(self):
+        data_dir = os.path.join(THISDIR, 'data')        
+        self.df = pd.read_csv(os.path.join(data_dir,'sandiego_data_by_zipcode.csv'))
+    def test_zipcodes(self):
+        zipcodes = self.df.zip.zipcodes
+        self.assertEqual(len(zipcodees),96)
+        pdtest.assert_index_equal(zipcodes[0:4],pd.Index(['91901','91902','91905','91910']))
+class TestTimeSeriesAccessor(unittest.TestCase):
+    def setUp(self):
+        data_dir = os.path.join(THISDIR, 'data')        
+        self.df = pd.read_csv(os.path.join(data_dir,'sandiego_data_by_zipcode.csv'))
+    def test_to_dict(self):
+        dict = self.df.ts.to_dict()
+        import pdb; pdb.set_trace()
 
 class TestCasesByZipCode(unittest.TestCase):
 
@@ -23,6 +39,11 @@ class TestCasesByZipCode(unittest.TestCase):
         self.cases = cases.SanDiegoCasesByZipCode(data_dir)
         
     def test_constructor(self):
+        pass
+        
+    def test_validator(self):
+        # Test that index is datetime
+        # Test all values are numeric
         pass
         
     def test_properties_and_methods(self):

@@ -6,8 +6,7 @@ import re
 import sys
 sys.path.append('../src')
 
-import jdcv19.dataset.cases as cases
-from jdcv19.dataset.zip_accessor import ZipAccessor
+from jdcv19.dataset.accessors import ZipAccessor, TSAccessor
 import jdcv19.gis.gis as gis
 import jdcv19.figures.figures as f
 
@@ -38,11 +37,12 @@ class TestPlots(unittest.TestCase):
         subprocess.run(["rm",MAP_TIMESERIES_OUTPUT_FILE])
         
     def setUp(self):
-        self.casedata = cases.SanDiegoCasesByZipCode(os.path.join(THIS_PATH,'data'))
-        
         df = pd.read_csv(os.path.join(THIS_PATH,'data','sandiego_data_by_zipcode.csv'))
+        df.index = df['Data through']
+        df = df.drop(columns=['Data through','Date Retrieved','TOTAL'])
+        self.df = df
         
-        self.gis = gis.ZipCodeGIS(df.zip.zipcodes)
+        self.gis = gis.ZipCodeGIS(self.df.zip.zipcodes)
         self.files_to_view = []
         
     def test_create_map(self):
@@ -56,16 +56,15 @@ class TestPlots(unittest.TestCase):
         
     def test_can_add_callback_to_map_figure(self):
         mapfig = f.create_map(self.gis)
-        tsfig = f.create_timeseries(self.casedata)
-        (mapfig, tsfig) = f.link_map_and_timeseries(mapfig,tsfig,self.casedata.by_zip_dict)
+        tsfig = f.create_timeseries(self.df)
+        (mapfig, tsfig) = f.link_map_and_timeseries(mapfig,tsfig,self.df.ts.value_dict)
         output_file(MAP_TIMESERIES_OUTPUT_FILE)
         save(row(mapfig,tsfig))
         
     def test_can_create_map_and_ts_with_diff_data(self):
         mapfig = f.create_map(self.gis)
-        self.casedata.return_type = 'diff'
-        tsfig = f.create_timeseries(self.casedata)
-        (mapfig, tsfig) = f.link_map_and_timeseries(mapfig,tsfig,self.casedata.by_zip_dict)
+        tsfig = f.create_timeseries(self.df.diff())
+        (mapfig, tsfig) = f.link_map_and_timeseries(mapfig,tsfig,self.df.ts.value_dict)
         output_file(MAP_TIMESERIES_DIFF_OUTPUT_FILE)
         save(row(mapfig,tsfig))
         

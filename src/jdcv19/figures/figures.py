@@ -63,36 +63,34 @@ def create_map(gis: ZipCodeGIS, colors='gray') -> figure:
     return f
         
 
-def create_timeseries(casedata: SanDiegoCasesByZipCode) -> figure:
+def create_timeseries(df: pd.DataFrame) -> figure:
     """ One line summary.
  
     Parameters
     ----------
-    casedata : cases.CasesByZipcode
+    df : Pandas DataFrame TimeSeries.  Index is Dates in Time Series.
  
     Returns
     ----------
-    mapfig  
-        a Bokeh Figure showing county subdivisions and zipcode points.  
- 
-        mapfig.renderers[0].data_source with name="zipcode_coordinates" is datasource of points
+    tsfid
  
     """
-    
-    y_range = DataRange1d(bounds=(casedata.zipcode_count_min,casedata.zipcode_count_max))
-    x_range = DataRange1d(bounds=(casedata.day_range.min(),casedata.day_range.max()))
+    y_range = DataRange1d(bounds=df.ts.value_range)
+    x_range = DataRange1d(bounds=df.ts.date_range)
     
     f = figure(plot_width=800,tools=[],plot_height=500,x_range=x_range,y_range=y_range,
             x_axis_type='datetime',y_axis_label='Total Reported Cases',x_axis_label='Date',
             title='Total Reported Cases in Selected Zip Code by Date')
-    f.xaxis.major_label_overrides = casedata.dates_dict
+    f.xaxis.major_label_overrides = df.ts.dates_dict
     f.xaxis.major_label_orientation = .75
     f.toolbar.logo = None
     f.toolbar_location = None
            
            
-    ys=casedata.by_zip_array
-    xs = len(ys)*[casedata.day_range.values]
+    #ys=casedata.by_zip_array
+    #xs = len(ys)*[casedata.day_range.values]
+    ys = df.ts.value_array
+    xs = df.ts.dates_array
     
     graylines = f.multi_line(xs,ys, line_color='#e5e7f1')
     
