@@ -1,6 +1,6 @@
 from bokeh.io import show
 from bokeh.models import (CDSView, ColorBar, ColumnDataSource, CustomJS, CustomJSFilter, 
-    GeoJSONDataSource, HoverTool, LinearColorMapper, Slider, Title, Legend, DatetimeTickFormatter, Text)
+    GeoJSONDataSource, HoverTool, LinearColorMapper, Slider, Title, Legend, DatetimeTickFormatter, Text, MultiLine)
 from bokeh.models.ranges import DataRange1d
 from bokeh.layouts import column, row, widgetbox
 from bokeh.palettes import brewer
@@ -92,7 +92,13 @@ def create_timeseries(df: pd.DataFrame) -> figure:
     ys = df.ts.value_array
     xs = df.ts.dates_array
     
-    graylines = f.multi_line(xs,ys, line_color='#e5e7f1')
+    multisource = ColumnDataSource(dict(xs=xs,ys=ys,zip=df.columns))
+    multiglyph = MultiLine(xs="xs",ys="ys", line_color='#e5e7f1')
+    
+    f.add_glyph(multisource,multiglyph)
+    
+    f.add_tools(HoverTool(tooltips = [('Zip Code:','@zip')]))
+    
     
     # Create highlight renderer
     highlight_datasource = ColumnDataSource({'Day':[],'Cases':[]})
