@@ -53,7 +53,9 @@ class TSAccessor:
     
     @property
     def value_dict(self):
-        d = {x : self._obj[x].values for x in self._obj.columns}
+        #d = {x : self._obj[x].values for x in self._obj.columns}
+        #return d
+        d = {x: dict(zip(range(0,len(self._obj[x].values)),self._obj[x].fillna(0).values)) for x in self._obj.columns}
         return d
     
     @property

@@ -102,6 +102,9 @@ def create_timeseries(df: pd.DataFrame) -> figure:
     return f
 
 def link_map_and_timeseries(mapfig: figure,tsfig: figure, datadict: dict) -> (figure,figure):
+    
+    ndays = max([len(x) for x in datadict.values()])
+    datadict['Day'] = dict(zip(range(0, ndays), range(0, ndays)))
         
     code = """
     const cases_by_zipcode = %s
